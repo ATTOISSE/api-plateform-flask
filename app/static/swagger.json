@@ -1,0 +1,377 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "API de Gestion des Utilisateurs et des Éléments",
+        "description": "Cette API permet de gérer les utilisateurs et les éléments dans une application.",
+        "version": "1.0.0"
+    },
+    "host": "localhost:5000",
+    "schemes": [
+        "http"
+    ],
+    "paths": {
+        "/api/auth/register": {
+            "post": {
+                "summary": "Inscription d'un nouvel utilisateur",
+                "description": "Cette opération crée un nouvel utilisateur dans le système.",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "username": {
+                                    "type": "string",
+                                    "example": "testuser"
+                                },
+                                "password": {
+                                    "type": "string",
+                                    "example": "mypassword"
+                                },
+                                "role": {
+                                    "type": "string",
+                                    "example": "user"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Utilisateur créé avec succès.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "success": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "username": {
+                                            "type": "string",
+                                            "example": "testuser"
+                                        },
+                                        "role": {
+                                            "type": "string",
+                                            "example": "user"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Données invalides."
+                    },
+                    "500": {
+                        "description": "Erreur serveur interne."
+                    }
+                }
+            }
+        },
+        "/api/auth/login": {
+            "post": {
+                "summary": "Connexion d'un utilisateur",
+                "description": "Permet à un utilisateur de se connecter en utilisant ses identifiants.",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "username": {
+                                    "type": "string",
+                                    "example": "testuser"
+                                },
+                                "password": {
+                                    "type": "string",
+                                    "example": "mypassword"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Connexion réussie.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "access_token": {
+                                    "type": "string",
+                                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Identifiants invalides."
+                    }
+                }
+            }
+        },
+        "/api/users": {
+            "get": {
+                "summary": "Récupérer tous les utilisateurs",
+                "description": "Retourne une liste de tous les utilisateurs enregistrés.",
+                "responses": {
+                    "200": {
+                        "description": "Liste des utilisateurs.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "username": {
+                                        "type": "string"
+                                    },
+                                    "role": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Créer un nouvel utilisateur",
+                "description": "Cette opération crée un nouvel utilisateur dans le système.",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "username": {
+                                    "type": "string",
+                                    "example": "newuser"
+                                },
+                                "password": {
+                                    "type": "string",
+                                    "example": "mypassword"
+                                },
+                                "role": {
+                                    "type": "string",
+                                    "example": "user"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Utilisateur créé avec succès."
+                    },
+                    "400": {
+                        "description": "Données invalides."
+                    }
+                }
+            }
+        },
+        "/api/users/{id}": {
+            "get": {
+                "summary": "Récupérer un utilisateur par ID",
+                "description": "Retourne les détails d'un utilisateur spécifique.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Utilisateur trouvé.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "username": {
+                                    "type": "string"
+                                },
+                                "role": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Utilisateur non trouvé."
+                    }
+                }
+            },
+            "put": {
+                "summary": "Mettre à jour un utilisateur par ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "username": {
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Utilisateur mis à jour."
+                    },
+                    "404": {
+                        "description": "Utilisateur non trouvé."
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Supprimer un utilisateur par ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Utilisateur supprimé avec succès."
+                    },
+                    "404": {
+                        "description": "Utilisateur non trouvé."
+                    }
+                }
+            }
+        },
+        "/api/item": {
+            "post": {
+                "summary": "Créer un élément",
+                "parameters": [
+                    {
+                        "name": "item",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "price": {
+                                    "type": "number"
+                                },
+                                "description": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Élément créé avec succès."
+                    },
+                    "400": {
+                        "description": "Données invalides."
+                    }
+                }
+            }
+        },
+        "/api/items": {
+            "get": {
+                "summary": "Récupérer tous les éléments",
+                "responses": {
+                    "200": {
+                        "description": "Liste des éléments."
+                    }
+                }
+            }
+        },
+        "/api/items/{id}": {
+            "get": {
+                "summary": "Récupérer un élément par ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Élément trouvé."
+                    },
+                    "404": {
+                        "description": "Élément non trouvé."
+                    }
+                }
+            },
+            "put": {
+                "summary": "Mettre à jour un élément par ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "item",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "price": {
+                                    "type": "number"
+                                },
+                                "description": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Élément mis à jour."
+                    },
+                    "404": {
+                        "description": "Élément non trouvé."
+                    }
+                }
+            }
+        }
+    }
+}
